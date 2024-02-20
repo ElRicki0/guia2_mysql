@@ -1,0 +1,46 @@
+SELECT clientes_pedidos.*
+FROM cliente AS clientes_pedidos
+JOIN pedido AS pedidos ON clientes_pedidos.id_cliente = pedidos.id_cliente;
+
+SELECT*FROM pedido
+WHERE fecha_registro BETWEEN '2024-01-01' AND '2024-02-20';
+
+SELECT*FROM cliente ORDER BY nacimiento_cliente DESC;
+
+SELECT detalle.*
+FROM detalle_pedido detalle
+JOIN pedido pedi ON detalle.id_pedido=pedi.id_pedido;
+
+SELECT*FROM producto where precio_producto =(SELECT MAX(precio_producto) FROM producto);
+
+SELECT AVG(precio_producto) AS promedio_precios
+FROM producto;
+
+SELECT cliente.nombre_cliente, pedido.direccion_pedido, 
+pedido.estado_pedido FROM pedido  INNER JOIN cliente ON 
+pedido.id_cliente=cliente.id_cliente;
+
+SELECT*FROM cliente WHERE (cliente.nombre_cliente LIKE"D%");
+
+SELECT cliente.nombre_cliente, COUNT(pedido.id_pedido) AS cantidad_ordenes
+FROM cliente JOIN pedido  ON cliente.id_cliente = pedido.id_cliente
+WHERE pedido.fecha_registro >= '2024-01-01'   AND pedido.fecha_registro <= '2024-02-29' 
+GROUP BY cliente.id_cliente ORDER BY cantidad_ordenes DESC;
+
+SELECT producto.nombre_producto, detalle_pedido.cantidad_producto 
+FROM detalle_pedido 
+INNER JOIN producto ON detalle_pedido.id_producto = producto.id_producto 
+ORDER BY detalle_pedido.cantidad_producto DESC LIMIT 3;
+
+SELECT cliente.nombre_cliente, COUNT(pedido.id_pedido) AS cantidad_ordenes
+FROM cliente JOIN pedido  ON cliente.id_cliente = pedido.id_cliente
+GROUP BY cliente.id_cliente ORDER BY cantidad_ordenes DESC LIMIT 1;
+
+SELECT pedido.id_pedido, cliente.id_cliente, cliente.nombre_cliente, cliente.direccion_cliente,
+pedido.estado_pedido, pedido.fecha_registro, detalle_pedido.id_detalle, producto.nombre_producto,
+detalle_pedido.cantidad_producto, producto.precio_producto
+FROM cliente
+INNER JOIN pedido ON cliente.id_cliente = pedido.id_cliente
+INNER JOIN detalle_pedido ON pedido.id_pedido = detalle_pedido.id_pedido
+INNER JOIN producto ON detalle_pedido.id_producto = producto.id_producto;
+
